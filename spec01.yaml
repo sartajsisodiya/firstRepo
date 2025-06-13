@@ -1,0 +1,104 @@
+openapi: 3.0.3
+info:
+  title: Payment Request API
+  version: 1.0.0
+paths:
+  /payments:
+    post:
+      summary: Create a payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payee:
+                  type: object
+                  properties:
+                    account_number:
+                      type: string
+                      example: "12345678"
+                    sort_code:
+                      type: string
+                      example: "12-34-56"
+                amount:
+                  type: object
+                  properties:
+                    currency:
+                      type: string
+                      example: "GBP"
+                    value:
+                      type: number
+                      format: float
+                      example: 150.00
+                reference:
+                  type: string
+                  example: "Invoice 1023"
+              required:
+                - payee
+                - amount
+                - reference
+      responses:
+        '200':
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "e2f1c5b0-9c4f-4e55-b4c6-932bba5d8912"
+                  status:
+                    type: string
+                    example: "success"
+                  config:
+                    type: object
+                    properties:
+                      images:
+                        type: object
+                        properties:
+                          allowed_formats:
+                            type: array
+                            items:
+                              type: string
+                            example: ["jpg", "png", "webp"]
+                          max_size_mb:
+                            type: number
+                            example: 5
+                          max_dimensions:
+                            type: object
+                            properties:
+                              width:
+                                type: integer
+                                example: 1920
+                              height:
+                                type: integer
+                                example: 1080
+                          thumbnail_enabled:
+                            type: boolean
+                            example: true
+                      urls:
+                        type: object
+                        properties:
+                          allowed_domains:
+                            type: array
+                            items:
+                              type: string
+                            example: ["example.com", "cdn.example.com"]
+                          enable_redirects:
+                            type: boolean
+                            example: false
+                          url_expiry_seconds:
+                            type: integer
+                            example: 3600
+                          base_url:
+                            type: string
+                            format: uri
+                            example: "https://cdn.example.com/media/"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2025-06-11T14:32:00Z"
