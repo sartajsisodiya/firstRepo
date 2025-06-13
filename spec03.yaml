@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: UI Layout API
+  version: 1.0.0
+paths:
+  /ui-layout:
+    get:
+      summary: Get UI layout configuration
+      responses:
+        '200':
+          description: UI layout or message response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      request_id:
+                        type: string
+                        format: uuid
+                        example: "c8f21bde-9832-4a0d-8571-9a7c5db5e042"
+                      status:
+                        type: string
+                        example: "success"
+                      timestamp:
+                        type: string
+                        format: date-time
+                        example: "2025-06-11T15:22:45Z"
+                      layout:
+                        type: object
+                        properties:
+                          header:
+                            type: object
+                            properties:
+                              title:
+                                type: string
+                                example: "Welcome, Alex"
+                              logo_url:
+                                type: string
+                                format: uri
+                                example: "https://cdn.example.com/assets/logo.svg"
+                              navigation:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    label:
+                                      type: string
+                                    icon:
+                                      type: string
+                                    route:
+                                      type: string
+                                  required:
+                                    - label
+                                    - icon
+                                    - route
+                          content:
+                            type: object
+                            properties:
+                              sections:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                    title:
+                                      type: string
+                                      nullable: true
+                                    data:
+                                      type: object
+                                      properties:
+                                        image_url:
+                                          type: string
+                                          format: uri
+                                        cta_text:
+                                          type: string
+                                        cta_link:
+                                          type: string
+                                      required:
+                                        - image_url
+                                        - cta_text
+                                        - cta_link
+                                      nullable: true
+                                    items:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          title:
+                                            type: string
+                                          image:
+                                            type: string
+                                            format: uri
+                                          price:
+                                            type: string
+                                          action:
+                                            type: object
+                                            properties:
+                                              label:
+                                                type: string
+                                              route:
+                                                type: string
+                                            required:
+                                              - label
+                                              - route
+                                        required:
+                                          - title
+                                          - image
+                                          - price
+                                          - action
+                                      nullable: true
+                                  required:
+                                    - type
+                          footer:
+                            type: object
+                            properties:
+                              links:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    label:
+                                      type: string
+                                    route:
+                                      type: string
+                                  required:
+                                    - label
+                                    - route
+                              copyright:
+                                type: string
+                    required:
+                      - request_id
+                      - status
+                      - timestamp
+                      - layout
+
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        example: "info"
+                      message:
+                        type: string
+                        example: "No new notifications at this time."
+                    required:
+                      - status
+                      - message
